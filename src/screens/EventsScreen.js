@@ -26,35 +26,79 @@ const EventsScreen = ({ user }) => {
 
   const POLL_MS = 30000;
 
-  const buildSchedule = (allEvents) => {
-    const days = [];
-    // Fixed 7-day schedule: Aug 30 to Sep 5, 2025
-    const startDate = new Date(2025, 7, 30); // August is month index 7
-    for (let i = 0; i < 7; i++) {
-      const d = new Date(startDate);
-      d.setDate(startDate.getDate() + i);
-      const dateKey = d.toISOString().slice(0, 10);
-      const dayLabel = d.toLocaleDateString(undefined, { weekday: 'short' }).toUpperCase();
-      const eventsForDay = (allEvents || [])
-        .filter((ev) => {
-          const evDate = new Date(ev.date);
-          const evKey = evDate.toISOString().slice(0, 10);
-          return evKey === dateKey;
-        })
-        .map((ev) => ({
-          time: ev.time || '',
-          title: ev.title,
-          location: ev.location,
-          type: (ev.category || ev.eventType || 'other').toString().toLowerCase(),
-        }))
-        .sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+    const buildSchedule = (allEvents) => {
+        // Helper: local YYYY-MM-DD
+        const ymdLocal = (d) => {
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, "0");
+            const day = String(d.getDate()).padStart(2, "0");
+            return `${y}-${m}-${day}`;
+        };
 
-      days.push({ date: dateKey, day: dayLabel, events: eventsForDay });
-    }
-    return days;
-  };
+        // Normalize event.date to a local YYYY-MM-DD key
+        const dateKeyOf = (input) => {
+            if (!input) return "";
+            if (typeof input === "string" && /^\d{4}-\d{2}-\d{2}$/.test(input)) {
+                // already a plain date string: treat as date-only key
+                return input;
+            }
+            return ymdLocal(new Date(input));
+        };
 
-  const [ongoingEvents, setOngoingEvents] = useState([]);
+        // Convert time string to minutes for sorting (handles "10", "10am", "10:30 am")
+        const timeToMinutes = (timeStr) => {
+            if (!timeStr) return Number.POSITIVE_INFINITY; // put empty/invalid times at the end
+            const clean = String(timeStr).trim().toLowerCase();
+
+            // If it's a range like "10:00 AM - 12:00 PM", take the start
+            const firstPart = clean.split(/-|to|–|—/)[0].trim();
+
+            const m1 = firstPart.match(/(\d{1,2}):(\d{2})\s*(am|pm)?/);
+            const m2 = firstPart.match(/^(\d{1,2})\s*(am|pm)?$/);
+
+            let hours = 0, minutes = 0, ampm = null;
+
+            if (m1) {
+                hours = parseInt(m1[1], 10);
+                minutes = parseInt(m1[2], 10);
+                ampm = m1[3];
+            } else if (m2) {
+                hours = parseInt(m2[1], 10);
+                minutes = 0;
+                ampm = m2[2];
+            } else {
+                return Number.POSITIVE_INFINITY;
+            }
+
+            if (ampm === "pm" && hours !== 12) hours += 12;
+            if (ampm === "am" && hours === 12) hours = 0;
+
+            return hours * 60 + minutes;
+        };
+
+        const days = [];
+        for (let i = 0; i < 7; i++) {
+            // Local-time date objects
+            const d = new Date(2025, 7, 30 + i); // Aug=7
+            const dateKey = ymdLocal(d);
+            const dayLabel = d.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
+
+            const eventsForDay = (allEvents || [])
+                .filter((ev) => dateKeyOf(ev.date) === dateKey)
+                .map((ev) => ({
+                    time: ev.time || "",
+                    title: ev.title,
+                    location: ev.location,
+                    type: (ev.category || ev.eventType || "other").toString().toLowerCase(),
+                }))
+                .sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+
+            days.push({ date: dateKey, day: dayLabel, events: eventsForDay });
+        }
+        return days;
+    };
+
+    const [ongoingEvents, setOngoingEvents] = useState([]);
 
   const [upcomingEvents, setUpcomingEvents] = useState([]);
 
@@ -138,6 +182,7 @@ const EventsScreen = ({ user }) => {
             { batch: 'E22', score: Array.isArray(lbRaw.E22) ? lbRaw.E22[idx] : undefined },
             { batch: 'E23', score: Array.isArray(lbRaw.E23) ? lbRaw.E23[idx] : undefined },
             { batch: 'E24', score: Array.isArray(lbRaw.E24) ? lbRaw.E24[idx] : undefined },
+            { batch: 'Staff', score: Array.isArray(lbRaw.Staff) ? lbRaw.Staff[idx] : undefined },
           ].filter((s) => typeof s.score === 'number')
            .sort((a, b) => (b.score || 0) - (a.score || 0));
 
