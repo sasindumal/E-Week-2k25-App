@@ -62,6 +62,7 @@ export default function MainNavigator({ user, onLogout }) {
           fontSize: 18,
         },
         tabBarStyle: {
+              position: 'absolute',
           backgroundColor: COLORS.PRIMARY_DARK,
           borderTopWidth: 0,
           elevation: 10,
