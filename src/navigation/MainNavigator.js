@@ -63,7 +63,7 @@ export default function MainNavigator({ user, onLogout }) {
         },
         tabBarStyle: {
               position: 'absolute',
-          backgroundColor: COLORS.PRIMARY_DARK,
+          backgroundColor: 'rgba(17, 9, 33, 0.9)',
           borderTopWidth: 0,
           elevation: 10,
           paddingBottom: 0,

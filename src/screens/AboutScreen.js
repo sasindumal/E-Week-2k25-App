@@ -128,7 +128,7 @@ const AboutScreen = () => {
           A Journey of Innovation
         </ModernText>
         <ModernText variant="bodySmall" color="white" align="center" style={styles.headerOrganizer}>
-          University of Jaffna • Faculty of Engineering
+            E22 • Faculty of Engineering • University of Jaffna
         </ModernText>
         
         <View style={styles.headerStats}>
@@ -459,7 +459,7 @@ const AboutScreen = () => {
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
-      >
+      ><View style={styles.groupView}>
         {renderHeader()}
         {renderAboutSection()}
         {renderStatsSection()}
@@ -469,12 +469,16 @@ const AboutScreen = () => {
         {renderContactSection()}
         {renderSocialMedia()}
         {renderAppInfo()}
+      </View>
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+    groupView: {
+        marginBottom:120,
+    },
   container: {
     flex: 1,
     backgroundColor: MODERN_COLORS.background.primary,

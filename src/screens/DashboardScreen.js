@@ -302,11 +302,12 @@ const DashboardScreen = ({ navigation }) => {
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={loadData} colors={[COLORS.PRIMARY_RED]} />
                 }
-            >
+            > <View style={styles.groupView}>
                 {renderCountdownCard()}
                 {renderLeaderboard()}
                 {renderUpcomingEvents()}
                 {/*} {renderSponsors()} */}
+            </View>
             </ScrollView>
         </LinearGradient>
     );
@@ -371,6 +372,10 @@ const styles = StyleSheet.create({
         padding: 20,
         marginBottom: 16,
         ...SHADOWS.LIGHT,
+    },
+
+    groupView: {
+        marginBottom:120,
     },
     sectionHeader: {
         flexDirection: 'row',

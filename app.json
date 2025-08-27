@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "E Week 2025",
+    "name": "E-Week-2K25",
     "slug": "eweek-2025-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/logo.png",
@@ -19,13 +19,13 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#110921"
       },
       "package": "com.sasindumalhara.eweek2025app"
     },
     "web": {
-      "favicon": "./assets/logo.png"
+      "favicon": "./assets/icon.png"
     },
     "plugins": [
       "expo-font"

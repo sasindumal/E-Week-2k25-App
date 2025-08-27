@@ -193,7 +193,7 @@ const SplashScreen = ({ onFinish }) => {
                         A Journey of Innovation
                     </ModernText>
                     <ModernText variant="bodySmall" color="white" align="center" style={styles.organizer}>
-                        University of Jaffna • Faculty of Engineering
+                        E22 • Faculty of Engineering • University of Jaffna
                     </ModernText>
                 </Animated.View>
 

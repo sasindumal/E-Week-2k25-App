@@ -358,7 +358,7 @@ const LeaderboardScreen = () => {
   return (
     <LinearGradient colors={[COLORS.PRIMARY_WHITE, COLORS.GRAY_LIGHT]} style={styles.container}>
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-      
+          <View style={styles.groupView}>
 
         {renderTabs()}
 
@@ -377,14 +377,17 @@ const LeaderboardScreen = () => {
               <Ionicons name="document-text" size={24} color={COLORS.PRIMARY_RED} />
               <Text style={styles.sectionTitle}>Past Event Score Cards</Text>
             </View>
-            
-            {renderScorecardSearchAndSort()}
 
+
+            {renderScorecardSearchAndSort()}
+              <View style={styles.groupView}>
             <View style={styles.scoreCardsContainer}>
               {getDisplayedScorecards().map(event => renderEventScoreCard(event))}
             </View>
+              </View>
           </View>
         )}
+          </View>
       </ScrollView>
     </LinearGradient>
   );
@@ -394,6 +397,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+    groupView: {
+        marginBottom:120,
+    },
   scrollView: {
     flex: 1,
     padding: 16,

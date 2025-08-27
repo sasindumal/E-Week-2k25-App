@@ -443,7 +443,9 @@ const EventsScreen = ({ user }) => {
               <Ionicons name="play-circle" size={24} color={COLORS.PRIMARY_RED} />
               <Text style={styles.sectionTitle}>Ongoing Events</Text>
             </View>
+              <View style={styles.groupView}>
             {sortEvents(filterEvents(ongoingEvents)).map(event => renderOngoingEvent(event))}
+              </View>
           </View>
         )}
 
@@ -453,7 +455,9 @@ const EventsScreen = ({ user }) => {
               <Ionicons name="time" size={24} color={COLORS.PRIMARY_RED} />
               <Text style={styles.sectionTitle}>Upcoming Events</Text>
             </View>
+              <View style={styles.groupView}>
             {sortEvents(filterEvents(upcomingEvents)).map(event => renderUpcomingEvent(event))}
+              </View>
           </View>
         )}
 
@@ -463,7 +467,9 @@ const EventsScreen = ({ user }) => {
               <Ionicons name="checkmark-circle" size={24} color={COLORS.PRIMARY_RED} />
               <Text style={styles.sectionTitle}>Past Events</Text>
             </View>
+              <View style={styles.groupView}>
             {sortEvents(filterEvents(pastEvents)).map(event => renderPastEvent(event))}
+              </View>
           </View>
         )}
       </ScrollView>
@@ -482,6 +488,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+    groupView: {
+        marginBottom:120,
+    },
   scrollView: {
     flex: 1,
     padding: 16,
