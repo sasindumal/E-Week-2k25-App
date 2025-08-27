@@ -21,13 +21,19 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#110921"
-      }
+      },
+      "package": "com.sasindumalhara.eweek2025app"
     },
     "web": {
       "favicon": "./assets/logo.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "c882cec3-2be4-409e-9f59-2dbb1c2dd344"
+      }
+    }
   }
 }
