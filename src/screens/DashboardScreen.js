@@ -100,7 +100,9 @@ const DashboardScreen = ({ navigation }) => {
             if (Array.isArray(lb)) {
                 mappedLb = lb.map((row, idx) => ({
                     batch: row.batch || row.team || `Team ${idx + 1}`,
-                    points: row.points || row.score || 0,
+                    points: typeof (row.points || row.score) === 'object' 
+                        ? Object.values(row.points || row.score).reduce((acc, val) => acc + (Number(val) || 0), 0)
+                        : (row.points || row.score || 0),
                     position: row.position || row.rank || idx + 1,
                 }));
             } else if (lb && typeof lb === 'object') {
@@ -304,7 +306,7 @@ const DashboardScreen = ({ navigation }) => {
                 {renderCountdownCard()}
                 {renderLeaderboard()}
                 {renderUpcomingEvents()}
-                {renderSponsors()}
+                {/*} {renderSponsors()} */}
             </ScrollView>
         </LinearGradient>
     );

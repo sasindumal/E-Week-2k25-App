@@ -93,10 +93,7 @@ const AboutScreen = () => {
   ];
 
   const socialMedia = [
-    { name: 'Facebook', icon: 'logo-facebook', color: '#1877F2', url: 'https://facebook.com/eweek2025' },
-    { name: 'Instagram', icon: 'logo-instagram', color: '#E4405F', url: 'https://instagram.com/eweek2025' },
-    { name: 'Twitter', icon: 'logo-twitter', color: '#1DA1F2', url: 'https://twitter.com/eweek2025' },
-    { name: 'LinkedIn', icon: 'logo-linkedin', color: '#0A66C2', url: 'https://linkedin.com/company/eweek2025' },
+    { name: 'Facebook', icon: 'logo-facebook', color: '#1877F2', url: 'https://m.facebook.com/100071054394311/' },
   ];
 
   const renderHeader = () => (
