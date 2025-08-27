@@ -53,7 +53,7 @@ const LeaderboardScreen = () => {
           const totalEvents = Array.isArray(lbRaw.EventId) ? lbRaw.EventId.length : 0;
           const winners = finishedEvents.map((e) => e?.winners).filter(Boolean);
 
-          const teams = ['E21', 'E22', 'E23', 'E24'];
+          const teams = ['E21', 'E22', 'E23', 'E24', 'Staff'];
           const candidates = teams.map((team) => ({
             batch: team,
             points: Number(lbRaw[`${team}Points`] || 0),
@@ -82,6 +82,7 @@ const LeaderboardScreen = () => {
                 { batch: 'E22', score: Array.isArray(lbRaw.E22) ? lbRaw.E22[idx] : undefined },
                 { batch: 'E23', score: Array.isArray(lbRaw.E23) ? lbRaw.E23[idx] : undefined },
                 { batch: 'E24', score: Array.isArray(lbRaw.E24) ? lbRaw.E24[idx] : undefined },
+                { batch: 'Staff', score: Array.isArray(lbRaw.Staff) ? lbRaw.Staff[idx] : undefined },
               ].filter((s) => typeof s.score === 'number')
                .sort((a, b) => (b.score || 0) - (a.score || 0)),
             };
@@ -247,6 +248,7 @@ const LeaderboardScreen = () => {
       if (key.includes('E22')) return require('../../assets/e22.png');
       if (key.includes('E23')) return require('../../assets/e23.png');
       if (key.includes('E24')) return require('../../assets/e24.png');
+      if (key.includes('Staff')) return require('../../assets/staff.png');
     } catch (e) {}
     return null;
   };
