@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
+    Animated,
+    Easing,
   View,
   Text,
   StyleSheet,
@@ -13,6 +15,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, GRADIENTS, SHADOWS } from '../constants/colors';
 import { fetchLiveLeaderboard, fetchDemoLeaderboard, fetchFinishedEvents } from '../services/api';
+import { Crown } from "lucide-react-native";
+
+
+
 
 const LeaderboardScreen = () => {
   const [selectedTab, setSelectedTab] = useState('ranking');
@@ -21,6 +27,67 @@ const LeaderboardScreen = () => {
   const [pastEvents, setPastEvents] = useState([]);
   const [scorecardSearchQuery, setScorecardSearchQuery] = useState('');
   const [scorecardSortBy, setScorecardSortBy] = useState('date'); // 'date' | 'name' | 'winner'
+
+
+    const rotateValue = useRef(new Animated.Value(0)).current;
+    const timeoutRef = useRef(null);
+
+    useEffect(() => {
+        const performRandomRotation = () => {
+            // Reset rotation value
+            rotateValue.setValue(0);
+
+            // Perform one complete rotation
+            Animated.timing(rotateValue, {
+                toValue: 1,
+                duration: 800, // Duration for one rotation (adjust as needed)
+                easing: Easing.out(Easing.inOut(Easing.quad)), // Smooth easing
+                useNativeDriver: true,
+            }).start(() => {
+                // After rotation completes, schedule next rotation
+                scheduleNextRotation();
+            });
+        };
+
+        const scheduleNextRotation = () => {
+            // Clear any existing timeout
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+
+            // Random delay between 2-8 seconds (adjust range as needed)
+            const randomDelay = Math.random() * 120000 + 2000;
+
+            timeoutRef.current = setTimeout(() => {
+                performRandomRotation();
+            }, randomDelay);
+        };
+
+        // Start the first rotation immediately (or after initial delay)
+        const initialDelay = Math.random() * 3000 + 1000; // 1-4 seconds initial delay
+        timeoutRef.current = setTimeout(() => {
+            performRandomRotation();
+        }, initialDelay);
+
+        // Cleanup function
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, [rotateValue]);
+
+    const rotateY = rotateValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["0deg", "360deg"], // One complete rotation
+    });
+
+// Alternative version with different rotation directions (optional)
+    const rotateYAlternative = rotateValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: ["0deg", `${Math.random() > 0.5 ? 360 : -360}deg`], // Random direction
+    });
+
 
   useEffect(() => {
     const loadLeaderboard = async () => {
@@ -271,9 +338,9 @@ const LeaderboardScreen = () => {
         <View style={styles.podiumWrap}>
           {second && (
             <View style={styles.podiumColumn}>
-              <View style={[styles.avatarCircle, { backgroundColor: '#C0C0C022' }]}>
+              <View style={[styles.avatarCircle]}>
                 {getBatchLogo(second.batch) ? (
-                  <Image source={getBatchLogo(second.batch)} style={styles.avatarImg} resizeMode="cover" />
+                    <Animated.Image source={getBatchLogo(second.batch)} style={[styles.avatarImg, { transform: [{ rotateY }] }]} resizeMode="cover"  />
                 ) : (
                   <Text style={styles.avatarText}>{getInitials(second.batch)}</Text>
                 )}
@@ -289,10 +356,14 @@ const LeaderboardScreen = () => {
           )}
           {first && (
             <View style={styles.podiumColumn}>
-              <View style={[styles.crown, { backgroundColor: COLORS.ACCENT }]} />
-              <View style={[styles.avatarCircle, { backgroundColor: '#FFD70022' }]}>
+                <Crown
+                    color={COLORS.ACCENT}
+                    size={24}
+                    style={styles.crown}
+                />
+                <View style={[styles.avatarCircle]}>
                 {getBatchLogo(first.batch) ? (
-                  <Image source={getBatchLogo(first.batch)} style={styles.avatarImg} resizeMode="cover" />
+                  <Animated.Image source={getBatchLogo(first.batch)} style={[styles.avatarImg, { transform: [{ rotateY }] }]} resizeMode="cover"  />
                 ) : (
                   <Text style={styles.avatarText}>{getInitials(first.batch)}</Text>
                 )}
@@ -308,9 +379,9 @@ const LeaderboardScreen = () => {
           )}
           {third && (
             <View style={styles.podiumColumn}>
-              <View style={[styles.avatarCircle, { backgroundColor: '#CD7F3222' }]}>
+                <View style={[styles.avatarCircle]}>
                 {getBatchLogo(third.batch) ? (
-                  <Image source={getBatchLogo(third.batch)} style={styles.avatarImg} resizeMode="cover" />
+                    <Animated.Image source={getBatchLogo(third.batch)} style={[styles.avatarImg, { transform: [{ rotateY }] }]} resizeMode="cover"  />
                 ) : (
                   <Text style={styles.avatarText}>{getInitials(third.batch)}</Text>
                 )}
@@ -452,8 +523,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
   },
   crown: {
-    width: 18,
-    height: 18,
     borderRadius: 4,
     marginBottom: 6,
   },
@@ -463,15 +532,14 @@ const styles = StyleSheet.create({
     borderRadius: 29,
     marginBottom: 8,
     borderWidth: 0,
-    borderColor: 'rgba(255,255,255,0.35)',
+    borderColor: 'rgba(255,255,255,0.0)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   avatarImg: {
-    padding: 10,
-    width: 58,
-    height: 58,
-    borderRadius: 29,
+    width: 64,
+    height: 64,
+    borderRadius: 0,
   },
   avatarText: {
     color: COLORS.PRIMARY_WHITE,

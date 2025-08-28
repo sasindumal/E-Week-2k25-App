@@ -536,12 +536,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logoContainer: {
+        width: '100%',
     alignItems: 'center',
     marginBottom: MODERN_SPACING.lg,
     position: 'relative',
   },
   eweekLogo: {
-    width: 100,
+    width: 1000,
     height: 100,
     marginBottom: MODERN_SPACING.sm,
   },

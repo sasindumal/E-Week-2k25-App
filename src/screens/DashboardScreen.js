@@ -23,6 +23,7 @@ const BATCH_LOGOS = {
     E22: require('../../assets/e22.png'),
     E23: require('../../assets/e23.png'),
     E24: require('../../assets/e24.png'),
+    Staff: require('../../assets/staff.png'),
 };
 
 const DashboardScreen = ({ navigation }) => {
@@ -111,6 +112,7 @@ const DashboardScreen = ({ navigation }) => {
                     { batch: 'E22', points: Number(lb.E22Points || 0) },
                     { batch: 'E23', points: Number(lb.E23Points || 0) },
                     { batch: 'E24', points: Number(lb.E24Points || 0) },
+                    { batch: 'Staff', points: Number(lb.StaffPoints || 0)},
                 ];
                 mappedLb = candidates
                     .sort((a, b) => b.points - a.points)
@@ -302,12 +304,12 @@ const DashboardScreen = ({ navigation }) => {
                 refreshControl={
                     <RefreshControl refreshing={refreshing} onRefresh={loadData} colors={[COLORS.PRIMARY_RED]} />
                 }
-            > <View style={styles.groupView}>
-                {renderCountdownCard()}
-                {renderLeaderboard()}
-                {renderUpcomingEvents()}
-                {/*} {renderSponsors()} */}
-            </View>
+            >
+                <View style={styles.groupView}>
+                    {renderCountdownCard()}
+                    {renderLeaderboard()}
+                    {renderUpcomingEvents()}
+                </View>
             </ScrollView>
         </LinearGradient>
     );
@@ -394,7 +396,7 @@ const styles = StyleSheet.create({
     leaderboardItem: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 16,
+        padding: 10,
         backgroundColor: COLORS.GRAY_LIGHT,
         borderRadius: 12,
     },
@@ -410,7 +412,7 @@ const styles = StyleSheet.create({
         marginRight: 16,
     },
     rankText: {
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: 'bold',
         color: COLORS.PRIMARY_DARK,
     },
@@ -418,17 +420,18 @@ const styles = StyleSheet.create({
         color: COLORS.PRIMARY_WHITE,
     },
     batchText: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: 'bold',
         color: COLORS.PRIMARY_DARK,
         flex: 1,
     },
     batchLogo: {
-        width: 28,
-        height: 28,
-        borderRadius: 6,
+        width: 40,
+        height: 40,
+        borderRadius: 0,
         marginRight: 10,
-        borderWidth: 1,
+        borderWidth: 0,
+        padding:1,
         borderColor: 'rgba(0,0,0,0.06)'
     },
     pointsText: {
