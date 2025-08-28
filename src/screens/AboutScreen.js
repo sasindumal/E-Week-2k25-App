@@ -119,7 +119,7 @@ const AboutScreen = () => {
         </View>
         
         <ModernText variant="display" color="white" weight="bold" align="center" style={styles.headerTitle}>
-          E-Week 2025
+          E-Week 2K25
         </ModernText>
         <ModernText variant="title" color="accent" weight="semibold" align="center" style={styles.headerSubtitle}>
           ODYSSEY

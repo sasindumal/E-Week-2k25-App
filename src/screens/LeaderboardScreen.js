@@ -13,10 +13,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, GRADIENTS, SHADOWS } from '../constants/colors';
 import { fetchLiveLeaderboard, fetchDemoLeaderboard, fetchFinishedEvents } from '../services/api';
-import { Crown } from "lucide-react-native";
-
-
-
 
 const LeaderboardScreen = () => {
   const [selectedTab, setSelectedTab] = useState('ranking');
@@ -291,29 +287,25 @@ const LeaderboardScreen = () => {
               </View>
             </View>
           )}
-          {first && (
-            <View style={styles.podiumColumn}>
-                <Crown
-                    color={COLORS.ACCENT}
-                    size={24}
-                    style={styles.crown}
-                />
-              <View style={styles.avatarCircle}>
-                {getBatchLogo(first.batch) ? (
-                  <Image source={getBatchLogo(first.batch)} style={styles.avatarImg} resizeMode="cover" />
-                ) : (
-                  <Text style={styles.avatarText}>{getInitials(first.batch)}</Text>
-                )}
-              </View>
-              <Text style={styles.podiumName}>{first.batch}</Text>
-              <View style={styles.pointsChipGold}>
-                <Text style={styles.pointsChipText}>{first.points} QP</Text>
-              </View>
-              <View style={[styles.podiumPlatform, styles.podiumPlatformFirst]}>
-                <Text style={styles.platformPlace}>1</Text>
-              </View>
-            </View>
-          )}
+            {first && (
+                <View style={styles.podiumColumn}>
+                    <View style={[styles.crown, { backgroundColor: COLORS.ACCENT }]} />
+                    <View style={styles.avatarCircle}>
+                        {getBatchLogo(first.batch) ? (
+                            <Image source={getBatchLogo(first.batch)} style={styles.avatarImg} resizeMode="cover" />
+                        ) : (
+                            <Text style={styles.avatarText}>{getInitials(first.batch)}</Text>
+                        )}
+                    </View>
+                    <Text style={styles.podiumName}>{first.batch}</Text>
+                    <View style={styles.pointsChipGold}>
+                        <Text style={styles.pointsChipText}>{first.points} QP</Text>
+                    </View>
+                    <View style={[styles.podiumPlatform, styles.podiumPlatformFirst]}>
+                        <Text style={styles.platformPlace}>1</Text>
+                    </View>
+                </View>
+            )}
           {third && (
             <View style={styles.podiumColumn}>
                 <View style={styles.avatarCircle}>
@@ -459,10 +451,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 6,
   },
-  crown: {
-    borderRadius: 4,
-    marginBottom: 6,
-  },
+    crown: {
+        width: 18,
+        height: 18,
+        borderRadius: 4,
+        marginBottom: 6,
+    },
   avatarCircle: {
     width: 58,
     height: 58,
