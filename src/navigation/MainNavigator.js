@@ -69,7 +69,7 @@ export default function MainNavigator({ user, onLogout }) {
           paddingBottom: 0,
           paddingTop: 0,
           height: 70,
-            marginBottom:25,
+            marginBottom:15,
             marginHorizontal:10,
             alignItems: 'space-between',
            // justifyContent: 'center',

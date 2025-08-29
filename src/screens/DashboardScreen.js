@@ -11,6 +11,7 @@ import {
     ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import CountdownCard from '../components/CountdownCard';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, GRADIENTS, SHADOWS } from '../constants/colors';
 import { fetchUpcomingEvents, fetchLiveLeaderboard, fetchDemoLeaderboard } from '../services/api';
@@ -27,35 +28,8 @@ const BATCH_LOGOS = {
 };
 
 const DashboardScreen = ({ navigation }) => {
-    const targetDate = new Date("2025-08-30T08:00:00").getTime();
-    const [timeRemaining, setTimeRemaining] = useState({
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-    });
-
-    // Countdown logic
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            if (distance <= 0) {
-                clearInterval(interval);
-                setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-            } else {
-                setTimeRemaining({
-                    days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-                    hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-                    minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-                    seconds: Math.floor((distance % (1000 * 60)) / 1000),
-                });
-            }
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, [targetDate]);
+    const eventStartDate = '2025-08-30T08:00:00';
+    const eventEndDate = '2025-09-05T18:30:00';
 
     // Leaderboard data (fetched)
     const [leaderboardData, setLeaderboardData] = useState([]);
@@ -161,43 +135,12 @@ const DashboardScreen = ({ navigation }) => {
     }, [sponsors]);
 
     // Countdown card
-    const renderCountdownCard = () => {
-        // Check if all time values are zero
-        if (timeRemaining.days === 0 && 
-            timeRemaining.hours === 0 && 
-            timeRemaining.minutes === 0 && 
-            timeRemaining.seconds === 0) {
-            return null; // Hide the countdown card
-        }
-
-        return (
-            <LinearGradient colors={GRADIENTS.PRIMARY} style={styles.countdownCard}>
-                <View style={styles.countdownHeader}>
-                    <Ionicons name="rocket" size={24} color={COLORS.PRIMARY_WHITE} />
-                    <Text style={styles.countdownTitle}>E-Week 2025 Countdown</Text>
-                </View>
-                <Text style={styles.odysseyText}>ODYSSEY BEGINS IN</Text>
-                <View style={styles.timeContainer}>
-                    <View style={styles.timeBlock}>
-                        <Text style={styles.timeNumber}>{timeRemaining.days}</Text>
-                        <Text style={styles.timeLabel}>DAYS</Text>
-                    </View>
-                    <View style={styles.timeBlock}>
-                        <Text style={styles.timeNumber}>{timeRemaining.hours}</Text>
-                        <Text style={styles.timeLabel}>HOURS</Text>
-                    </View>
-                    <View style={styles.timeBlock}>
-                        <Text style={styles.timeNumber}>{timeRemaining.minutes}</Text>
-                        <Text style={styles.timeLabel}>MINS</Text>
-                    </View>
-                    <View style={styles.timeBlock}>
-                        <Text style={styles.timeNumber}>{timeRemaining.seconds}</Text>
-                        <Text style={styles.timeLabel}>SECS</Text>
-                    </View>
-                </View>
-            </LinearGradient>
-        );
-    };
+    const renderCountdownCard = () => (
+        <CountdownCard
+            startDate={eventStartDate}
+            endDate={eventEndDate}
+        />
+    );
 
     // Leaderboard
     const renderLeaderboard = () => (
@@ -318,56 +261,6 @@ const DashboardScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: { flex: 1 },
     scrollView: { flex: 1, padding: 16 },
-    countdownCard: {
-        alignItems: 'center',
-        borderRadius: 20,
-        padding: 24,
-        marginBottom: 24,
-        ...SHADOWS.MEDIUM,
-    },
-    countdownHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 16,
-    },
-    countdownTitle: {
-        color: COLORS.PRIMARY_WHITE,
-        fontSize: 18,
-        fontWeight: 'bold',
-        marginLeft: 8,
-    },
-    odysseyText: {
-        color: COLORS.PRIMARY_WHITE,
-        fontSize: 16,
-        fontWeight: '600',
-        textAlign: 'center',
-        marginBottom: 20,
-        opacity: 0.9,
-    },
-    timeContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    timeBlock: {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        borderRadius: 12,
-        padding: 16,
-        alignItems: 'center',
-        flex: 1,
-        marginHorizontal: 4,
-    },
-    timeNumber: {
-        color: COLORS.PRIMARY_WHITE,
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
-    timeLabel: {
-        color: COLORS.PRIMARY_WHITE,
-        fontSize: 10,
-        fontWeight: '600',
-        marginTop: 4,
-        opacity: 0.8,
-    },
     sectionContainer: {
         backgroundColor: COLORS.PRIMARY_WHITE,
         borderRadius: 16,
