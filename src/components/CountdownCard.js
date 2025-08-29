@@ -59,7 +59,7 @@ const CountdownCard = ({
   endDate,
   titleUpcoming = 'Countdown to E-Week 2K25',
   titleLive = 'Time Until E-Week 2K25 Ends',
-  captionUpcoming = 'July 30 - August 3, 2025 • Faculty of Engineering • University of Jaffna',
+  captionUpcoming = 'August 30 - September 05, 2025 • Faculty of Engineering • University of Jaffna',
   captionLive = 'The Odyssey Continues • Faculty of Engineering • University of Jaffna',
 }) => {
   const { status, timeLeft } = useEventStatus(startDate, endDate);
